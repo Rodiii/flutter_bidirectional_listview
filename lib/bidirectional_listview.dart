@@ -5,9 +5,13 @@ import 'dart:math' as math;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-/// Infinite ListView
+/// BidirectionalListView
 ///
-/// ListView that builds its children with to an infinite extent.
+/// ListView with items that can be scrolled in both directions with fixed item counts (positve and negative) and scroll boundaries
+/// 
+/// BidirectionalListView forked from InfiniteListView https://github.com/fluttercommunity/flutter_infinite_listview
+/// 
+/// See example for usage
 ///
 class BidirectionalListView extends StatelessWidget {
   /// See [ListView.builder]

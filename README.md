@@ -17,6 +17,9 @@ Limitations:
 
 Replace your existing `ListView` with `BidirectionalListView`. Builder pattern must be used because of its infinite nature.
 
+A complete tutorial how to use `BidirectionalListView` can be found here: [Tutorial](https://rothech.com/list-view-lazy-loading-up-down-direction)
+
+
 Please refer to the example for usage: [Quick-Link](https://github.com/Rodiii/flutter_bidirectional_listview/blob/master/example/lib/main.dart)
 
 ### Example

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:infinite_listview/infinite_listview.dart';
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:bidirectional_listview/bidirectional_listview.dart';
 
 void main() => runApp(ExampleApp());
 
@@ -8,81 +12,113 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ExampleScreen(),
+      home: MyHome(),
     );
   }
 }
 
-class ExampleScreen extends StatefulWidget {
+class MyHome extends StatefulWidget {
   @override
-  _ExampleScreenState createState() => _ExampleScreenState();
+  _MyHomeState createState() => new _MyHomeState();
 }
 
-class _ExampleScreenState extends State<ExampleScreen> {
-  final InfiniteScrollController _infiniteController = InfiniteScrollController(
-    initialScrollOffset: 0.0,
-  );
+class _MyHomeState extends State<MyHome> {
+  BidirectionalScrollController controller;
+  Map<int, String> items = new Map();
+  static const double ITEM_HEIGHT = 30;
+
+  @override
+  void initState() {
+    super.initState();
+
+    for (int i = -10; i <= 10; i++) {
+      items[i] = "Item " + i.toString();
+    }
+    controller = new BidirectionalScrollController()
+      ..addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_scrollListener);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Example'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.arrow_downward),
-              onPressed: () {
-                _infiniteController.animateTo(_infiniteController.offset + 2000.0,
-                    duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.arrow_upward),
-              onPressed: () {
-                _infiniteController.animateTo(_infiniteController.offset - 2000.0,
-                    duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
-              },
-            ),
-          ],
-          bottom: const TabBar(
-            tabs: <Widget>[
-              Tab(text: 'First'),
-              Tab(text: 'Second'),
-              Tab(text: 'Third'),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: <Widget>[
-            _buildTab(0),
-            _buildTab(1),
-            _buildTab(2),
-          ],
+    List<int> keys = items.keys.toList();
+    keys.sort();
+
+    int negativeItemCount = keys.first;
+    int itemCount = keys.last;
+    print("itemCount = " + itemCount.toString());
+    print("negativeItemCount = " + negativeItemCount.abs().toString());
+    return new Scaffold(
+      body: new Scrollbar(
+        child: new BidirectionalListView.builder(
+          controller: controller,
+          physics: AlwaysScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return Container(
+                child: Text(items[index]),
+                height: ITEM_HEIGHT,
+                padding: EdgeInsets.all(0),
+                margin: EdgeInsets.all(0));
+          },
+          itemCount: itemCount,
+          negativeItemCount: negativeItemCount.abs(),
         ),
       ),
     );
   }
 
-  Widget _buildTab(int tab) {
-    return InfiniteListView.separated(
-      key: PageStorageKey(tab),
-      controller: _infiniteController,
-      itemBuilder: (BuildContext context, int index) {
-        return Material(
-          child: InkWell(
-            onTap: () {},
-            child: ListTile(
-              title: Text('Tab $tab Item #$index'),
-              subtitle: Text('Subtitle $index'),
-              trailing: const Icon(Icons.chevron_right),
-            ),
-          ),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(height: 2.0),
-      anchor: 0.5,
-    );
+  void _rebuild() => setState(() {});
+
+  double oldScrollPosition = 0.0;
+  void _scrollListener() {
+    bool scrollingDown = oldScrollPosition < controller.position.pixels;
+    List<int> keys = items.keys.toList();
+    keys.sort();
+    int negativeItemCount = keys.first.abs();
+    int itemCount = keys.last;
+
+    double positiveReloadBorder = (itemCount * ITEM_HEIGHT - 3 * ITEM_HEIGHT);
+    double negativeReloadBorder =
+        (-(negativeItemCount * ITEM_HEIGHT - 3 * ITEM_HEIGHT));
+
+    print("pixels = " + controller.position.pixels.toString());
+    print("itemCount = " + itemCount.toString());
+    print("negativeItemCount = " + negativeItemCount.toString());
+    print("minExtent = " + controller.position.minScrollExtent.toString());
+    print("maxExtent = " + controller.position.maxScrollExtent.toString());
+    print("positiveReloadBorder = " + positiveReloadBorder.toString());
+    print("negativeReloadBorder = " + negativeReloadBorder.toString());
+
+    bool rebuildNecessary = false;
+    if (scrollingDown && controller.position.pixels > positiveReloadBorder) {
+      for (int i = itemCount + 1; i <= itemCount + 20; i++) {
+        items[i] = "Item " + i.toString();
+      }
+      rebuildNecessary = true;
+    } else if (!scrollingDown &&
+        controller.position.pixels < negativeReloadBorder) {
+      for (int i = -negativeItemCount - 20; i < -negativeItemCount; i++) {
+        items[i] = "Item " + i.toString();
+      }
+      rebuildNecessary = true;
+    }
+
+    try {
+      BidirectionalScrollPosition pos = controller.position;
+      pos.setMinMaxExtent(
+          -negativeItemCount * ITEM_HEIGHT, itemCount * ITEM_HEIGHT);
+    } catch (error) {
+      print(error.toString());
+    }
+    if (rebuildNecessary) {
+      _rebuild();
+    }
+
+    oldScrollPosition = controller.position.pixels;
   }
 }

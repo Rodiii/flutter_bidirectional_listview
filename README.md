@@ -1,15 +1,11 @@
 
-[![Flutter Community: infinite_listview](https://fluttercommunity.dev/_github/header/infinite_listview?v1.0.1+1)](https://github.com/fluttercommunity/community)
+# Flutter Bidrectional ListView
 
-# Flutter Infinite ListView
-
-[![pub package](https://img.shields.io/pub/v/infinite_listview.svg)](https://pub.dartlang.org/packages/infinite_listview)
-
-ListView with items that can be scrolled infinitely in both directions.
+ListView with items that can be scrolled in both directions with a fixed item count and scroll boundaries.
 
 ## Quick Usage
 
-Replace your existing `ListView` with `InfiniteListView`. Builder pattern must be used because of its infinite nature.
+Replace your existing `ListView` with `BidirectionalListView`. Builder pattern must be used because of its infinite nature.
 
 ### Example
 ![Example](https://github.com/fluttercommunity/flutter_infinite_listview/raw/readme/example.gif)

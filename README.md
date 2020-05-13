@@ -8,7 +8,7 @@ ListView with items that can be scrolled in both directions with a fixed item co
 Replace your existing `ListView` with `BidirectionalListView`. Builder pattern must be used because of its infinite nature.
 
 ### Example
-![Example](https://github.com/fluttercommunity/flutter_infinite_listview/raw/readme/example.gif)
+![Example](https://github.com/Rodiii/flutter_bidirectional_listview/raw/master/example.gif)
 
 ## Bugs/Requests
 If you encounter any problems feel free to open an issue. If you feel the library is

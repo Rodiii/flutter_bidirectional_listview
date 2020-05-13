@@ -1,5 +1,5 @@
 
-# Flutter Bidrectional ListView
+# Flutter Bidirectional ListView
 
 ListView with items that can be scrolled in both directions with a fixed item count and scroll boundaries.
 

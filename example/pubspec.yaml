@@ -1,9 +1,9 @@
 name: example
-description: Flutter Infinite Listview Example
+description: Flutter Bidirectional Listview Example
 version: 1.0.1
 
 dependencies:
-  infinite_listview:
+  bidirectional_listview:
     path: ../
   flutter:
     sdk: flutter

@@ -1,3 +1,6 @@
+## 1.0.2+3
+  * Update description to describe the project better
+
 ## 1.0.2+2
   * Added link to complete tutorial
 

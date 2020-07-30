@@ -1,6 +1,6 @@
 name: bidirectional_listview
-description: ListView with items that can be scrolled in both directions with a fixed item count and scroll boundaries.
-version: 1.0.2+2
+description: ListView with items that can be scrolled and lazy loaded in up and down direction with a fixed item count and scroll boundaries.
+version: 1.0.2+3
 homepage: https://github.com/Rodiii/flutter_bidirectional_listview
 maintainer: Christoph Rothermel (@Rodiii)
 

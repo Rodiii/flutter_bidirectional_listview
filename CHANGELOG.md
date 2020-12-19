@@ -1,3 +1,7 @@
+## 1.0.2+4
+  * Format code
+  * Refactor example to remove linter warnings
+
 ## 1.0.2+3
   * Update description to describe the project better
 

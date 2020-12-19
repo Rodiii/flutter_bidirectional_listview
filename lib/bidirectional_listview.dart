@@ -4,13 +4,14 @@ import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 
 /// BidirectionalListView
 ///
 /// ListView with items that can be scrolled in both directions with fixed item counts (positve and negative) and scroll boundaries
-/// 
+///
 /// BidirectionalListView forked from InfiniteListView https://github.com/fluttercommunity/flutter_infinite_listview
-/// 
+///
 /// See example for usage
 ///
 class BidirectionalListView extends StatelessWidget {
